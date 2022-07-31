@@ -6,24 +6,6 @@ on:
 
 jobs:
 
-  build-xenial:
-
-    runs-on: ubuntu-18.04
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Checkout submodule
-      run: git submodule update --init --depth 1 description/media
-
-    - name: Log in to registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-
-    - name: Build, test, push docker
-      run: ./scripts/docker/build.sh --xenial --remote
-                                     --owner ${{ github.repository_owner }}
-                                     astrobee test_astrobee push_astrobee
-
   build-bionic:
 
     runs-on: ubuntu-18.04
@@ -39,23 +21,5 @@ jobs:
 
     - name: Build, test, push docker
       run: ./scripts/docker/build.sh --bionic --remote
-                                     --owner ${{ github.repository_owner }}
-                                     astrobee test_astrobee push_astrobee
-
-  build-focal:
-
-    runs-on: ubuntu-20.04
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Checkout submodule
-      run: git submodule update --init --depth 1 description/media
-
-    - name: Log in to registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-
-    - name: Build, test, push docker
-      run: ./scripts/docker/build.sh --focal --remote
                                      --owner ${{ github.repository_owner }}
                                      astrobee test_astrobee push_astrobee
