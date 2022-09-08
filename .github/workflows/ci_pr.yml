@@ -12,7 +12,8 @@ jobs:
       matrix:
         runs-on: [self-hosted, buildjet-2vcpu-ubuntu-2004, buildjet-4vcpu-ubuntu-1804, buildjet-8vcpu-ubuntu-1804]
     name: build-bionic - ${{matrix.runs-on}}
-    runs-on: ${{matrix.runs-on}}
+    #runs-on: ${{matrix.runs-on}}
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
       with:
