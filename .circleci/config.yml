@@ -1,0 +1,36 @@
+version: 2.1
+
+workflows:
+  sample:
+    jobs:
+      - build-bionic
+jobs:
+
+  build-bionic:
+    docker:
+      - image: cimg/base:2022.08-18.04
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run:
+          name: Installing SUDO
+          command: 'sudo apt-get update && sudo apt-get install -y && sudo rm -rf /var/lib/apt/lists/*'
+      - run:
+          name: Install CMAKE
+          command: 'sudo apt-get update && sudo apt-get install -y cmake'
+      - run:
+          name: Install deps
+          command: |
+            sudo apt-get update && sudo apt-get install -y zlib1g-dev
+            sudo apt-get update && sudo apt-get install -y libssl-dev
+            sudo apt-get update && sudo apt-get install -y libpcre3-dev
+            sudo apt-get update && sudo apt-get install -y libbz2-dev
+            sudo apt-get update && sudo apt-get install -y libmysqlclient-dev
+            sudo apt-get update && sudo apt-get install -y libmysql++-dev
+      - run:
+          name: Build Step
+          command: |
+            git submodule update --init --depth 1 description/media
+            ./scripts/docker/build.sh --bionic --remote astrobee test_astrobee
